@@ -3,7 +3,7 @@ from nacl.exceptions import BadSignatureError
 from nacl.signing import VerifyKey
 import os
 import requests
-from static import COMMAND_IDS
+from .static import COMMAND_IDS
 
 
 app = Flask(__name__)
