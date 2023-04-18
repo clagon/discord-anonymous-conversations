@@ -71,7 +71,7 @@ def interactions():
             status = r.status_code
             if status != requests.codes.created and status != requests.codes.ok:
                 return jsonify({"type": 4, "data": {"content": f"Error: {r.json()}", "flags": 64}})
-            return jsonify({"type": 4, "data": {"content": "メッセージを送信しました", "flags": 64}})
+            return jsonify({"type": 4, "data": {"content": "フィードバックを送信しました。\nThank You for Your FeedBack❤", "flags": 64}})
 
 
 if __name__ == "__main__":
