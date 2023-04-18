@@ -7,7 +7,8 @@ my_application_id = os.getenv("DISCORD_APPLICATION_ID")
 guild_id = os.getenv("DISCORD_GUILD_ID")
 my_bot_token = os.environ.get("DISCORD_BOT_TOKEN")
 
-def create_command(name: str, type: int, description: str=None, *, name_localizations: dict=None, description_localizations: dict=None, options: list=None) -> int:
+
+def create_command(name: str, type: int, description: str = None, *, name_localizations: dict = None, description_localizations: dict = None, options: list = None) -> int:
     """
     Guild Commandを作成する。
     :param name: コマンドの名前(ユーザーに表示される。slash commandではこれを入力して使う。).
@@ -39,7 +40,7 @@ def create_command(name: str, type: int, description: str=None, *, name_localiza
                 raise ValueError(f"name_localizations[{k}] is invalid")
     if options is not None:
         for option in options:
-            if not "name" in option or not "type" in option or not "description" in option:
+            if "name" not in option or "type" not in option or "description" not in option:
                 raise ValueError("option is invalid")
             elif not regex.match(r"^[-_\p{L}\p{N}\p{sc=Deva}\p{sc=Thai}]{1,32}$", option.get("name", "")):
                 raise ValueError("option name is too long")
@@ -47,7 +48,7 @@ def create_command(name: str, type: int, description: str=None, *, name_localiza
                 raise ValueError("option type is invalid")
             elif not option.get("description", "") or len(option.get("description", "")) > 100:
                 raise ValueError("option description is invalid")
-    
+
     payload = dict()
     payload["name"] = name
     payload["type"] = type
@@ -72,7 +73,12 @@ def create_command(name: str, type: int, description: str=None, *, name_localiza
         raise Exception(f"status code: {status}\n{r.content}")
     return int(r.json()["id"])
 
+
 if __name__ == "__main__":
     # コマンドを作成する
-    command_id = create_command("send", 1, "send a message", description_localizations={"ja":"メッセージを送信する。",}, options=[{"name":"message", "type":3, "description":"message to send", "description_localizations":{"ja":"送信するメッセージ。"}, "required":True}, {"name":"file", "type":11, "description":"file to send", "description_localizations":{"ja":"送信するファイル。"}, "required":False}])
+    command_id = create_command("feedback", 1, "provide feedback", description_localizations={"ja": "フィードバックを送る。", }, options=[
+            {"name": "title", "type": 3, "description": "title", "description_localizations": {"ja": "タイトル"}, "required": True},
+            {"name": "message", "type": 3, "description": "message to send", "description_localizations": {"ja": "送信するメッセージ。"}, "required": True},
+            {"name": "file", "type": 11, "description": "file to send", "description_localizations": {"ja": "添付するファイル。"}, "required": False}
+        ])
     print(command_id)
